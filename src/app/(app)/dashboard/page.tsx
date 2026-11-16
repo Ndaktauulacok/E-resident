@@ -10,7 +10,7 @@ import { ATTENDANCE_STATUS, APPROVAL_ACTION, SESSION_LABEL } from "@/lib/labels"
 import { Badge, DL, EmptyState, Panel, Stat } from "@/components/ui";
 import { AttendanceRateChart } from "@/components/charts";
 import { DormBoard, cellLook } from "@/components/board";
-import { KvspLogo } from "@/components/brand";
+import { HostelCartoon } from "@/components/cartoon";
 
 export const metadata = { title: "Dashboard" };
 
@@ -24,8 +24,8 @@ function Hello({ user, sub }: { user: AuthUser; sub: string }) {
     <section className="plate-in relative mb-8 overflow-hidden rounded-[24px] bg-ink px-6 py-7 text-white shadow-[0_25px_50px_-25px_rgba(124,58,237,.7)] sm:px-8">
       <div aria-hidden className="blob absolute -right-10 -top-16 size-64 rounded-full bg-pink-500/40" />
       <div aria-hidden className="blob absolute -bottom-24 left-1/3 size-64 rounded-full bg-cyan-400/30" style={{ animationDelay: "-6s" }} />
-      <div aria-hidden className="absolute -right-6 top-1/2 hidden -translate-y-1/2 opacity-90 sm:block">
-        <KvspLogo size={190} className="float" />
+      <div aria-hidden className="absolute -bottom-3 right-4 hidden w-[230px] sm:block">
+        <HostelCartoon sky={false} />
       </div>
       <div className="relative max-w-[70%]">
         <p className="inline-flex items-center gap-2 rounded-full bg-white/15 px-3 py-1 text-sm font-medium text-white/90 ring-1 ring-white/20">

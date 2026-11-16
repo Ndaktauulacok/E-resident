@@ -1,7 +1,8 @@
 import Link from "next/link";
 import clsx from "clsx";
 import { ArrowLeft } from "lucide-react";
-import { KvspLogo } from "./brand";
+import { KvspLogo, KvspMark } from "./brand";
+import { HostelCartoon } from "./cartoon";
 
 type Variant = "user" | "admin";
 
@@ -49,14 +50,13 @@ export function AuthShell({
         <div className="my-auto grid items-center gap-10 py-8 lg:grid-cols-[1.05fr_1fr]">
           {/* Panel kiri: identiti */}
           <section className={clsx("fade-up hidden lg:block", admin ? "text-white" : "text-ink")}>
-            <div className="flex items-center gap-4">
-              <KvspLogo size={96} className="float" />
-              <div>
-                <p className={clsx("font-display text-3xl font-bold tracking-wide", admin ? "text-white" : "text-grad")}>E-RESIDENT</p>
-                <p className={clsx("text-sm", admin ? "text-white/60" : "text-muted")}>{institution}</p>
+            <div className="float w-fit">
+              <div className="shine rounded-2xl bg-white/95 px-5 py-4 shadow-[0_20px_40px_-20px_rgba(40,35,102,.6)] ring-1 ring-white">
+                <KvspLogo width={340} />
               </div>
             </div>
-            <h1 className="mt-10 font-display text-[3.4rem] font-bold leading-[0.98]">{heading}</h1>
+            <p className={clsx("mt-6 font-display text-2xl font-bold tracking-wide", admin ? "text-amber-300" : "text-grad")}>E-RESIDENT</p>
+            <h1 className="mt-2 font-display text-[3.4rem] font-bold leading-[0.98]">{heading}</h1>
             <p className={clsx("mt-5 max-w-md text-[1.05rem]", admin ? "text-white/70" : "text-muted")}>{lead}</p>
             <ul className="mt-8 space-y-3">
               {points.map((p, i) => (
@@ -68,6 +68,11 @@ export function AuthShell({
                 </li>
               ))}
             </ul>
+            {!admin && (
+              <div className="mt-8 w-[300px] overflow-hidden rounded-[28px] bg-white/70 p-1.5 shadow-[0_20px_40px_-20px_rgba(124,58,237,.5)] ring-1 ring-white">
+                <HostelCartoon />
+              </div>
+            )}
           </section>
 
           {/* Kad borang */}
@@ -75,7 +80,7 @@ export function AuthShell({
             <div className={clsx("relative rounded-[24px] p-[1.5px] shadow-[0_30px_60px_-25px_rgba(124,58,237,.55)]", admin ? "bg-gradient-to-br from-amber-400 via-orange-500 to-rose-600" : "bg-gradient-to-br from-indigo-400 via-fuchsia-400 to-pink-400")}>
               <div className={clsx("rounded-[23px] px-6 py-8 sm:px-9", admin ? "bg-[#17112f] text-white" : "bg-white/95 backdrop-blur")}>
                 <div className="mb-6 flex items-center gap-3 lg:hidden">
-                  <KvspLogo size={56} />
+                  <span className="rounded-xl bg-white p-1.5"><KvspMark height={40} /></span>
                   <div>
                     <p className={clsx("font-display text-2xl font-bold", admin ? "text-white" : "text-grad")}>E-RESIDENT</p>
                     <p className={clsx("text-xs", admin ? "text-white/60" : "text-muted")}>{institution}</p>

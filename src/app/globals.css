@@ -220,3 +220,23 @@
 /* Muncul semasa skrol */
 .reveal { opacity: 0; transform: translateY(28px); transition: opacity .8s cubic-bezier(.2,.7,.2,1), transform .8s cubic-bezier(.2,.7,.2,1); }
 .reveal.is-visible { opacity: 1; transform: none; }
+
+/* ── Animasi kartun asrama ── */
+.cartoon-wave, .cartoon-blink, .cartoon-book, .cartoon-sway { transform-box: view-box; }
+@keyframes cartoon-wave { 0%,100% { transform: rotate(-8deg); } 50% { transform: rotate(22deg); } }
+.cartoon-wave { animation: cartoon-wave 1.1s ease-in-out infinite; }
+@keyframes cartoon-blink { 0%,92%,100% { transform: scaleY(1); } 95% { transform: scaleY(.1); } }
+.cartoon-blink { animation: cartoon-blink 4s ease-in-out infinite; }
+@keyframes cartoon-bob { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
+.cartoon-bob { animation: cartoon-bob 2.4s ease-in-out infinite; }
+@keyframes cartoon-book { 0%,100% { transform: rotate(0); } 50% { transform: rotate(-6deg); } }
+.cartoon-book { animation: cartoon-book 3s ease-in-out infinite; }
+@keyframes cartoon-sway { 0%,100% { transform: rotate(-3deg); } 50% { transform: rotate(3deg); } }
+.cartoon-sway { animation: cartoon-sway 4s ease-in-out infinite; }
+@keyframes cartoon-drift { 0% { transform: translateX(-140px); } 100% { transform: translateX(460px); } }
+.cartoon-drift { animation: cartoon-drift 28s linear infinite; }
+.cartoon-drift-slow { animation: cartoon-drift 40s linear infinite; animation-delay: -18s; }
+@keyframes cartoon-spin { to { transform: rotate(360deg); } }
+.cartoon-spin { animation: cartoon-spin 18s linear infinite; }
+@keyframes cartoon-light { 0%,100% { fill: #fde68a; } 50% { fill: #fbbf24; } }
+.cartoon-light { animation: cartoon-light 2.4s ease-in-out infinite; }

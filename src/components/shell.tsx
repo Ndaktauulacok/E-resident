@@ -7,7 +7,7 @@ import clsx from "clsx";
 import {
   Bell, LayoutDashboard, ClipboardCheck, RadioTower, Inbox, Users, Building2, CalendarClock, UserCog, ScrollText, Menu, X, LogOut, UserRound, GraduationCap,
 } from "lucide-react";
-import { KvspMark } from "./brand";
+import { KvspChip } from "./brand";
 
 const ICONS = { LayoutDashboard, ClipboardCheck, RadioTower, Inbox, Users, Building2, CalendarClock, UserCog, ScrollText, GraduationCap };
 export type NavItem = { href: string; label: string; icon: keyof typeof ICONS; badge?: number; group: string };
@@ -53,7 +53,7 @@ function NavList({ items, onNavigate }: { items: NavItem[]; onNavigate?: () => v
 function Brand({ institution }: { institution: string }) {
   return (
     <Link href="/dashboard" className="flex items-center gap-3 px-3">
-      <KvspMark size={42} />
+      <KvspChip height={28} />
       <span className="leading-tight">
         <span className="block font-display text-[1.3rem] font-bold tracking-wide text-white">E-RESIDENT</span>
         <span className="block max-w-[11rem] truncate text-[0.74rem] text-white/50">{institution}</span>

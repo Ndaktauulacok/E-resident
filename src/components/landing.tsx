@@ -6,7 +6,8 @@ import clsx from "clsx";
 import {
   ArrowRight, ShieldCheck, LogIn, UserPlus, ClipboardCheck, RadioTower, CalendarClock, BellRing, Building2, Users, Sparkles, ChevronDown, GraduationCap,
 } from "lucide-react";
-import { KvspLogo } from "./brand";
+import { KvspHeroLogo, KvspMark } from "./brand";
+import { HostelCartoon } from "./cartoon";
 
 type Props = {
   institution: string;
@@ -78,7 +79,7 @@ export function Landing({ institution, signedIn, stats }: Props) {
       <header className="fixed inset-x-0 top-0 z-40">
         <div className="mx-auto mt-3 flex max-w-6xl items-center justify-between gap-3 rounded-2xl px-4 py-2.5 glass shadow-[0_10px_30px_-15px_rgba(79,70,229,.35)] sm:mx-4 lg:mx-auto">
           <Link href="/" className="flex items-center gap-2.5">
-            <KvspLogo size={40} animated={false} compact />
+            <KvspMark height={36} />
             <span className="leading-tight">
               <span className="block font-display text-xl font-bold text-grad">E-RESIDENT</span>
               <span className="hidden text-[0.72rem] text-muted sm:block">{institution}</span>
@@ -108,36 +109,47 @@ export function Landing({ institution, signedIn, stats }: Props) {
           ))}
         </div>
 
-        <div className="relative mx-auto max-w-4xl text-center">
-          <div className="pop mx-auto w-fit" style={{ animationDelay: "100ms" }}>
-            <KvspLogo size={230} className="float drop-shadow-[0_25px_35px_rgba(124,58,237,.45)]" />
-          </div>
-          <p className="fade-up mt-6 inline-flex items-center gap-2 rounded-full bg-white/80 px-4 py-1.5 text-sm font-semibold text-sign shadow-sm ring-1 ring-violet-200" style={{ animationDelay: "350ms" }}>
-            <Sparkles size={15} className="text-pink" /> Sistem Pengurusan Asrama Digital
-          </p>
-          <h1 className="fade-up mt-5 font-display text-[3.2rem] font-bold leading-[0.95] sm:text-[5rem]" style={{ animationDelay: "500ms" }}>
-            Selamat Datang ke <br />
-            <span className="text-grad-anim">E-RESIDENT KVSP1</span>
-          </h1>
-          <p className="fade-up mx-auto mt-5 max-w-xl text-lg text-muted" style={{ animationDelay: "650ms" }}>
-            Asrama {institution} kini lebih teratur. Kehadiran, pendaftaran dan makluman Warden, semuanya di hujung jari.
-          </p>
+        <div className="relative mx-auto w-full max-w-6xl">
+          <KvspHeroLogo />
 
-          <div className="fade-up mt-9 flex flex-col items-center gap-3" style={{ animationDelay: "800ms" }}>
-            {signedIn ? (
-              <Link href="/dashboard" className="btn btn-primary shine !h-14 !rounded-2xl !px-8 text-lg">
-                Teruskan sebagai {signedIn.name.split(" ")[0]} <ArrowRight size={20} />
-              </Link>
-            ) : (
-              <button onClick={getStarted} className="btn btn-primary shine group !h-14 !rounded-2xl !px-9 text-lg">
-                Get Started <ArrowRight size={20} className="transition group-hover:translate-x-1" />
-              </button>
-            )}
-            <a href="#ciri" className="mt-6 inline-flex flex-col items-center text-sm font-medium text-muted hover:text-sign">
-              Terokai ciri-ciri <ChevronDown size={18} className="float" />
-            </a>
+          <div className="mt-10 grid items-center gap-10 lg:grid-cols-[1.05fr_1fr]">
+            <div className="text-center lg:text-left">
+              <p className="fade-up inline-flex items-center gap-2 rounded-full bg-white/80 px-4 py-1.5 text-sm font-semibold text-sign shadow-sm ring-1 ring-violet-200" style={{ animationDelay: "350ms" }}>
+                <Sparkles size={15} className="text-pink" /> Sistem Pengurusan Asrama Digital
+              </p>
+              <h1 className="fade-up mt-5 font-display text-[3rem] font-bold leading-[0.95] sm:text-[4.4rem]" style={{ animationDelay: "500ms" }}>
+                Selamat Datang ke <br />
+                <span className="text-grad-anim">E-RESIDENT KVSP1</span>
+              </h1>
+              <p className="fade-up mx-auto mt-5 max-w-xl text-lg text-muted lg:mx-0" style={{ animationDelay: "650ms" }}>
+                Asrama {institution} kini lebih teratur. Kehadiran, pendaftaran dan makluman Warden, semuanya di hujung jari.
+              </p>
+              <div className="fade-up mt-9 flex flex-col items-center gap-3 lg:items-start" style={{ animationDelay: "800ms" }}>
+                {signedIn ? (
+                  <Link href="/dashboard" className="btn btn-primary shine !h-14 !rounded-2xl !px-8 text-lg">
+                    Teruskan sebagai {signedIn.name.split(" ")[0]} <ArrowRight size={20} />
+                  </Link>
+                ) : (
+                  <button onClick={getStarted} className="btn btn-primary shine group !h-14 !rounded-2xl !px-9 text-lg">
+                    Get Started <ArrowRight size={20} className="transition group-hover:translate-x-1" />
+                  </button>
+                )}
+                <a href="#ciri" className="mt-4 inline-flex flex-col items-center text-sm font-medium text-muted hover:text-sign">
+                  Terokai ciri-ciri <ChevronDown size={18} className="float" />
+                </a>
+              </div>
+            </div>
+
+            {/* Kartun beranimasi */}
+            <div className="fade-up relative mx-auto w-full max-w-[520px]" style={{ animationDelay: "600ms" }}>
+              <div aria-hidden className="glow absolute -inset-4 rounded-[44px] bg-gradient-to-br from-indigo-400/40 via-pink-400/30 to-amber-300/40 blur-2xl" />
+              <div className="relative rounded-[36px] bg-white/70 p-2 shadow-[0_30px_60px_-25px_rgba(124,58,237,.55)] ring-1 ring-white">
+                <HostelCartoon />
+              </div>
+            </div>
           </div>
 
+          <div className="mx-auto max-w-3xl">
           {/* ── Pilihan masuk (muncul selepas Get Started) ── */}
           <div ref={accessRef} className={clsx("grid transition-all duration-700 ease-out", started ? "mt-6 grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0")}>
             <div className="-mx-8 overflow-hidden">
@@ -162,6 +174,7 @@ export function Landing({ institution, signedIn, stats }: Props) {
                 />
               </div>
             </div>
+          </div>
           </div>
         </div>
       </section>

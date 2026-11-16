@@ -1,7 +1,7 @@
 import Link from "next/link";
 import clsx from "clsx";
 import { ArrowLeft } from "lucide-react";
-import { KvspLogo, KvspMark } from "./brand";
+import { KvspLogo, KvspMark, ON_DARK } from "./brand";
 import { HostelCartoon } from "./cartoon";
 
 type Variant = "user" | "admin";
@@ -51,9 +51,7 @@ export function AuthShell({
           {/* Panel kiri: identiti */}
           <section className={clsx("fade-up hidden lg:block", admin ? "text-white" : "text-ink")}>
             <div className="float w-fit">
-              <div className="shine rounded-2xl bg-white/95 px-5 py-4 shadow-[0_20px_40px_-20px_rgba(40,35,102,.6)] ring-1 ring-white">
-                <KvspLogo width={340} />
-              </div>
+              <KvspLogo width={360} className={admin ? ON_DARK : "drop-shadow-[0_12px_18px_rgba(40,35,102,.2)]"} />
             </div>
             <p className={clsx("mt-6 font-display text-2xl font-bold tracking-wide", admin ? "text-amber-300" : "text-grad")}>E-RESIDENT</p>
             <h1 className="mt-2 font-display text-[3.4rem] font-bold leading-[0.98]">{heading}</h1>
@@ -80,7 +78,7 @@ export function AuthShell({
             <div className={clsx("relative rounded-[24px] p-[1.5px] shadow-[0_30px_60px_-25px_rgba(124,58,237,.55)]", admin ? "bg-gradient-to-br from-amber-400 via-orange-500 to-rose-600" : "bg-gradient-to-br from-indigo-400 via-fuchsia-400 to-pink-400")}>
               <div className={clsx("rounded-[23px] px-6 py-8 sm:px-9", admin ? "bg-[#17112f] text-white" : "bg-white/95 backdrop-blur")}>
                 <div className="mb-6 flex items-center gap-3 lg:hidden">
-                  <span className="rounded-xl bg-white p-1.5"><KvspMark height={40} /></span>
+                  <KvspMark height={40} className={admin ? ON_DARK : undefined} />
                   <div>
                     <p className={clsx("font-display text-2xl font-bold", admin ? "text-white" : "text-grad")}>E-RESIDENT</p>
                     <p className={clsx("text-xs", admin ? "text-white/60" : "text-muted")}>{institution}</p>

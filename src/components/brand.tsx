@@ -35,13 +35,12 @@ export function KvspMark({ height = 34, className }: { height?: number; classNam
   );
 }
 
-/** Simbol KV dalam lencana putih (untuk latar gelap) */
+/** Versi putih logo untuk latar gelap (tanpa kotak putih) */
+export const ON_DARK = "brightness-0 invert drop-shadow-[0_6px_14px_rgba(0,0,0,.35)]";
+
+/** Simbol KV untuk latar gelap (sidebar) */
 export function KvspChip({ height = 30 }: { height?: number }) {
-  return (
-    <span className="inline-flex shrink-0 items-center justify-center rounded-xl bg-white p-1.5 shadow-[0_6px_16px_-6px_rgba(0,0,0,.45)] ring-1 ring-white/60">
-      <KvspMark height={height} />
-    </span>
-  );
+  return <KvspMark height={height} className={ON_DARK} />;
 }
 
 /** Persembahan logo beranimasi untuk laman utama */
@@ -49,11 +48,9 @@ export function KvspHeroLogo() {
   return (
     <div className="pop relative mx-auto w-fit" style={{ animationDelay: "100ms" }}>
       {/* Cahaya di belakang */}
-      <div aria-hidden className="glow absolute -inset-6 rounded-[36px] bg-gradient-to-r from-[#282366]/25 via-[#f15a2b]/30 to-[#ed1c24]/25 blur-2xl" />
+      <div aria-hidden className="glow absolute -inset-6 rounded-full bg-gradient-to-r from-white/60 via-[#f15a2b]/15 to-white/60 blur-3xl" />
       <div className="float relative">
-        <div className="shine relative rounded-[28px] bg-white/90 px-6 py-5 shadow-[0_30px_60px_-25px_rgba(40,35,102,.55)] ring-1 ring-white sm:px-10 sm:py-7">
-          <KvspLogo width={560} priority className="w-[min(78vw,560px)]" />
-        </div>
+        <KvspLogo width={560} priority className="w-[min(86vw,560px)] drop-shadow-[0_18px_25px_rgba(40,35,102,.25)]" />
       </div>
     </div>
   );

@@ -37,7 +37,7 @@ export default async function AppLayout({ children }: { children: React.ReactNod
     <div className="min-h-dvh">
       <Sidebar items={nav} institution={institution} />
       <div className="lg:pl-64">
-        <header className="sticky top-0 z-20 flex h-16 items-center gap-3 border-b border-white/60 bg-white/60 px-4 shadow-[0_6px_20px_-14px_rgba(79,70,229,.35)] backdrop-blur-xl sm:px-6 lg:px-10">
+        <header className="sticky top-0 z-20 flex h-16 items-center gap-3 border-b border-white/60 bg-white/60 px-4 shadow-[0_6px_20px_-14px_rgba(40,35,102,.35)] backdrop-blur-xl sm:px-6 lg:px-10">
           <MobileNav items={nav} institution={institution} />
           {can(user, "residents.view") ? <SearchBox action="/penghuni" placeholder="Cari penghuni (nama atau no. matrik)" /> : <div />}
           <div className="ml-auto flex items-center gap-1.5">

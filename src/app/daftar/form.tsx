@@ -48,7 +48,7 @@ export function SignupForm() {
       </div>
 
       {/* Pratonton kelayakan log masuk */}
-      <div className="rounded-2xl bg-gradient-to-br from-indigo-50 via-violet-50 to-pink-50 p-4 ring-1 ring-violet-100">
+      <div className="rounded-2xl bg-gradient-to-br from-navy-50 via-navy-50 to-flame-50 p-4 ring-1 ring-navy-100">
         <p className="text-xs font-bold uppercase tracking-wider text-sign">Maklumat log masuk anda</p>
         <div className="mt-2 grid grid-cols-2 gap-3 text-sm">
           <div>
@@ -63,7 +63,7 @@ export function SignupForm() {
       </div>
 
       <label className="flex items-start gap-2.5 text-sm text-muted">
-        <input type="checkbox" name="agree" className="mt-0.5 size-4 accent-[#7c3aed]" required />
+        <input type="checkbox" name="agree" className="mt-0.5 size-4 accent-[#c2410c]" required />
         Saya mengesahkan maklumat ini adalah benar dan milik saya.
       </label>
       <SubmitButton className="btn btn-primary shine !h-12 w-full text-base" pendingText="Mendaftar…" disabled={!complete}>Daftar sekarang</SubmitButton>

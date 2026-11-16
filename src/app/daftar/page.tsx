@@ -25,7 +25,7 @@ export default async function SignupPage() {
         { icon: <UserPlus size={20} />, text: "Akaun aktif serta-merta selepas daftar" },
       ]}
     >
-      <p className="inline-flex items-center gap-2 rounded-full bg-pink-100 px-3 py-1 text-xs font-bold uppercase tracking-wider text-pink-600">Pelajar baharu</p>
+      <p className="inline-flex items-center gap-2 rounded-full bg-flame-100 px-3 py-1 text-xs font-bold uppercase tracking-wider text-flame-600">Pelajar baharu</p>
       <h2 className="mt-3 font-display text-[2.4rem] font-bold leading-none">Daftar akaun</h2>
       <p className="mb-6 mt-2 text-muted">Isi maklumat di bawah. Pastikan no. IC betul kerana ia digunakan untuk log masuk.</p>
       <SignupForm />

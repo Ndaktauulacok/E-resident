@@ -14,8 +14,8 @@ export function HostelCartoon({ className, sky = true }: { className?: string; s
     <svg viewBox="0 0 420 330" className={clsx("h-auto w-full", className)} role="img" aria-label="Ilustrasi pelajar di hadapan asrama">
       <defs>
         <linearGradient id={id("sky")} x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#c7d2fe" />
-          <stop offset="100%" stopColor="#fce7f3" />
+          <stop offset="0%" stopColor="#dedcf0" />
+          <stop offset="100%" stopColor="#fff1e8" />
         </linearGradient>
         <linearGradient id={id("wall")} x1="0" y1="0" x2="0" y2="1">
           <stop offset="0%" stopColor="#ffffff" />
@@ -23,7 +23,7 @@ export function HostelCartoon({ className, sky = true }: { className?: string; s
         </linearGradient>
         <linearGradient id={id("roof")} x1="0" y1="0" x2="1" y2="0">
           <stop offset="0%" stopColor="#282366" />
-          <stop offset="100%" stopColor="#4338ca" />
+          <stop offset="100%" stopColor="#3d3790" />
         </linearGradient>
         <clipPath id={id("clip")}>
           <rect x="0" y="0" width="420" height="330" rx="36" />
@@ -66,7 +66,7 @@ export function HostelCartoon({ className, sky = true }: { className?: string; s
             <rect
               key={i}
               x={194 + c * 46} y={134 + r * 40} width="30" height="26" rx="4"
-              fill={(r + c) % 3 === 0 ? "#fde68a" : "#c7d2fe"} stroke="#282366" strokeWidth="2.5"
+              fill={(r + c) % 3 === 0 ? "#fde68a" : "#dedcf0"} stroke="#282366" strokeWidth="2.5"
               className={(r + c) % 3 === 0 ? "cartoon-light" : undefined}
               style={{ animationDelay: `${(i % 5) * 0.6}s` }}
             />
@@ -93,7 +93,7 @@ export function HostelCartoon({ className, sky = true }: { className?: string; s
 
         {/* Hiasan bintang */}
         {[[60, 120], [150, 95], [30, 200]].map(([x, y], i) => (
-          <path key={i} d={`M${x} ${y - 7} l2 5 5 2 -5 2 -2 5 -2 -5 -5 -2 5 -2z`} fill={["#f15a2b", "#ec4899", "#8b5cf6"][i]} className="twinkle" style={{ animationDelay: `${i * 0.8}s` }} />
+          <path key={i} d={`M${x} ${y - 7} l2 5 5 2 -5 2 -2 5 -2 -5 -5 -2 5 -2z`} fill={["#f15a2b", "#ed1c24", "#f15a2b"][i]} className="twinkle" style={{ animationDelay: `${i * 0.8}s` }} />
         ))}
       </g>
     </svg>
@@ -113,8 +113,8 @@ function Cloud({ x, y, s }: { x: number; y: number; s: number }) {
 function Eyes({ cx, cy }: { cx: number; cy: number }) {
   return (
     <g className="cartoon-blink" style={{ transformOrigin: `${cx}px ${cy}px` }}>
-      <ellipse cx={cx - 7} cy={cy} rx="2.6" ry="3.4" fill="#1e1b4b" />
-      <ellipse cx={cx + 7} cy={cy} rx="2.6" ry="3.4" fill="#1e1b4b" />
+      <ellipse cx={cx - 7} cy={cy} rx="2.6" ry="3.4" fill="#1f1b52" />
+      <ellipse cx={cx + 7} cy={cy} rx="2.6" ry="3.4" fill="#1f1b52" />
     </g>
   );
 }
@@ -125,8 +125,8 @@ function Boy() {
       {/* kaki */}
       <rect x="62" y="262" width="11" height="34" rx="5" fill="#282366" />
       <rect x="78" y="262" width="11" height="34" rx="5" fill="#282366" />
-      <ellipse cx="66" cy="298" rx="10" ry="5" fill="#1e1b4b" />
-      <ellipse cx="85" cy="298" rx="10" ry="5" fill="#1e1b4b" />
+      <ellipse cx="66" cy="298" rx="10" ry="5" fill="#1f1b52" />
+      <ellipse cx="85" cy="298" rx="10" ry="5" fill="#1f1b52" />
       {/* badan (baju oren kolej) */}
       <rect x="54" y="206" width="44" height="62" rx="16" fill="#f15a2b" stroke="#282366" strokeWidth="2.5" />
       <path d="M68 208 L76 222 L84 208" fill="none" stroke="#fff" strokeWidth="2.5" strokeLinejoin="round" />
@@ -141,9 +141,9 @@ function Boy() {
       </g>
       {/* kepala */}
       <circle cx="76" cy="180" r="27" fill="#f5c09a" stroke="#282366" strokeWidth="2.5" />
-      <path d="M50 176 C50 150 102 146 103 174 C95 162 70 160 50 176 Z" fill="#1e1b4b" />
+      <path d="M50 176 C50 150 102 146 103 174 C95 162 70 160 50 176 Z" fill="#1f1b52" />
       <Eyes cx={76} cy={182} />
-      <path d="M68 193 Q76 200 84 193" fill="none" stroke="#1e1b4b" strokeWidth="2.5" strokeLinecap="round" />
+      <path d="M68 193 Q76 200 84 193" fill="none" stroke="#1f1b52" strokeWidth="2.5" strokeLinecap="round" />
       <circle cx="61" cy="190" r="4" fill="#fb7185" opacity=".55" />
       <circle cx="91" cy="190" r="4" fill="#fb7185" opacity=".55" />
     </g>
@@ -155,10 +155,10 @@ function Girl() {
     <g>
       {/* kaki / kain */}
       <path d="M118 262 h40 l6 34 h-52 z" fill="#282366" />
-      <ellipse cx="128" cy="298" rx="9" ry="4.5" fill="#1e1b4b" />
-      <ellipse cx="152" cy="298" rx="9" ry="4.5" fill="#1e1b4b" />
+      <ellipse cx="128" cy="298" rx="9" ry="4.5" fill="#1f1b52" />
+      <ellipse cx="152" cy="298" rx="9" ry="4.5" fill="#1f1b52" />
       {/* badan */}
-      <rect x="114" y="208" width="48" height="60" rx="16" fill="#8b5cf6" stroke="#282366" strokeWidth="2.5" />
+      <rect x="114" y="208" width="48" height="60" rx="16" fill="#6f68b3" stroke="#282366" strokeWidth="2.5" />
       {/* buku */}
       <g className="cartoon-book" style={{ transformOrigin: "138px 238px" }}>
         <rect x="122" y="226" width="32" height="24" rx="3" fill="#fbbf24" stroke="#282366" strokeWidth="2.5" />
@@ -167,11 +167,11 @@ function Girl() {
       <rect x="112" y="222" width="12" height="22" rx="6" fill="#f5c09a" />
       <rect x="152" y="222" width="12" height="22" rx="6" fill="#f5c09a" />
       {/* tudung */}
-      <path d="M108 186 C108 150 168 150 168 186 L172 222 C152 230 124 230 104 222 Z" fill="#ec4899" stroke="#282366" strokeWidth="2.5" strokeLinejoin="round" />
+      <path d="M108 186 C108 150 168 150 168 186 L172 222 C152 230 124 230 104 222 Z" fill="#ed1c24" stroke="#282366" strokeWidth="2.5" strokeLinejoin="round" />
       {/* muka */}
       <ellipse cx="138" cy="186" rx="21" ry="23" fill="#f5c09a" />
       <Eyes cx={138} cy={186} />
-      <path d="M131 197 Q138 203 145 197" fill="none" stroke="#1e1b4b" strokeWidth="2.5" strokeLinecap="round" />
+      <path d="M131 197 Q138 203 145 197" fill="none" stroke="#1f1b52" strokeWidth="2.5" strokeLinecap="round" />
       <circle cx="125" cy="194" r="3.5" fill="#fb7185" opacity=".55" />
       <circle cx="151" cy="194" r="3.5" fill="#fb7185" opacity=".55" />
     </g>

@@ -21,9 +21,9 @@ function greet() {
 
 function Hello({ user, sub }: { user: AuthUser; sub: string }) {
   return (
-    <section className="plate-in relative mb-8 overflow-hidden rounded-[24px] bg-ink px-6 py-7 text-white shadow-[0_25px_50px_-25px_rgba(124,58,237,.7)] sm:px-8">
-      <div aria-hidden className="blob absolute -right-10 -top-16 size-64 rounded-full bg-pink-500/40" />
-      <div aria-hidden className="blob absolute -bottom-24 left-1/3 size-64 rounded-full bg-cyan-400/30" style={{ animationDelay: "-6s" }} />
+    <section className="plate-in relative mb-8 overflow-hidden rounded-[24px] bg-ink px-6 py-7 text-white shadow-[0_25px_50px_-25px_rgba(40,35,102,.7)] sm:px-8">
+      <div aria-hidden className="blob absolute -right-10 -top-16 size-64 rounded-full bg-flame-500/40" />
+      <div aria-hidden className="blob absolute -bottom-24 left-1/3 size-64 rounded-full bg-amber-400/30" style={{ animationDelay: "-6s" }} />
       <div aria-hidden className="absolute -bottom-3 right-4 hidden w-[230px] sm:block">
         <HostelCartoon sky={false} />
       </div>
@@ -356,8 +356,8 @@ async function ResidentDashboard({ user }: { user: AuthUser }) {
 }
 
 const QUICK = [
-  { href: "/jadual", title: "Jadual Warden", desc: "Semak Warden bertugas minggu ini", icon: CalendarClock, grad: "from-indigo-500 to-violet-500" },
-  { href: "/notifikasi", title: "Notifikasi", desc: "Makluman terkini dari pihak asrama", icon: BellRing, grad: "from-pink-500 to-rose-500" },
+  { href: "/jadual", title: "Jadual Warden", desc: "Semak Warden bertugas minggu ini", icon: CalendarClock, grad: "from-navy-500 to-navy-700" },
+  { href: "/notifikasi", title: "Notifikasi", desc: "Makluman terkini dari pihak asrama", icon: BellRing, grad: "from-flame-500 to-crimson-500" },
   { href: "/profil", title: "Profil & Keselamatan", desc: "Kemas kini maklumat dan tukar kata laluan", icon: UserRound, grad: "from-amber-400 to-orange-500" },
 ];
 

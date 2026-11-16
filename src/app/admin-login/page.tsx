@@ -17,7 +17,7 @@ export default async function AdminLoginPage() {
     <AuthShell
       variant="admin"
       institution={institution}
-      heading={<>Portal <span className="bg-gradient-to-r from-amber-300 via-orange-400 to-rose-400 bg-clip-text text-transparent">Pentadbir</span></>}
+      heading={<>Portal <span className="bg-gradient-to-r from-amber-300 via-orange-400 to-crimson-400 bg-clip-text text-transparent">Pentadbir</span></>}
       lead="Kawalan penuh sistem asrama: pelajar berdaftar, akaun & role, blok dan dorm, kehadiran serta audit log."
       points={[
         { icon: <Users size={20} />, text: "Pantau semua pelajar yang mendaftar" },

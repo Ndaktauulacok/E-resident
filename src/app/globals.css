@@ -1,39 +1,61 @@
 @import "tailwindcss";
 
-/* ── Token reka bentuk E-RESIDENT (tema cerah KVSP1) ──
-   Dakwat   #1E1B4B  indigo gelap (teks utama)
-   Kertas   #F6F5FF  latar lembut ungu
-   Aksen    indigo #6366F1 → ungu #8B5CF6 → pink #EC4899
-   Tag      #FBBF24  amber
+/* ── Token reka bentuk E-RESIDENT (warna logo KVSP1) ──
+   Navy     #282366  (sidebar, teks utama, banner)
+   Oren     #F15A2B  → Merah #ED1C24  (butang & aksen)
+   Amber    #FBBF24  (aksen tambahan)
+   Kertas   #FDF9F4  putih krim
    Status:  ok #059669  amaran #D97706  bahaya #E11D48
 */
 @theme {
   --font-sans: "Barlow", ui-sans-serif, system-ui, sans-serif;
   --font-display: "Barlow Condensed", "Barlow", ui-sans-serif, sans-serif;
 
-  --color-ink: #1e1b4b;
-  --color-ink-2: #312e81;
-  --color-ink-3: #4338ca;
-  --color-paper: #f6f5ff;
+  --color-ink: #1f1b52;
+  --color-ink-2: #282366;
+  --color-ink-3: #3d3790;
+  --color-paper: #fdf9f4;
   --color-panel: #ffffff;
-  --color-line: #e4e2f3;
-  --color-line-2: #efedf9;
+  --color-line: #ece6de;
+  --color-line-2: #f5f0ea;
   --color-muted: #5b5f7a;
   --color-faint: #9095b0;
   --color-tag: #fbbf24;
   --color-tag-soft: #fef3c7;
-  --color-sign: #7c3aed;
-  --color-sign-soft: #ede9fe;
+  --color-sign: #c2410c;
+  --color-sign-soft: #fff1e8;
   --color-ok: #059669;
   --color-ok-soft: #d1fae5;
   --color-warn: #d97706;
   --color-warn-soft: #fef3c7;
   --color-danger: #e11d48;
   --color-danger-soft: #ffe4e6;
-  --color-pink: #ec4899;
-  --color-cyan: #06b6d4;
-  --color-violet: #8b5cf6;
-  --color-indigo: #6366f1;
+  /* Skala jenama KVSP1 */
+  --color-navy-50: #eeedf7;
+  --color-navy-100: #dedcf0;
+  --color-navy-200: #c3bfe4;
+  --color-navy-300: #9d97cf;
+  --color-navy-400: #6f68b3;
+  --color-navy-500: #3d3790;
+  --color-navy-600: #332e80;
+  --color-navy-700: #282366;
+  --color-navy-800: #1f1b52;
+  --color-navy-900: #16133b;
+  --color-flame-50: #fff3ee;
+  --color-flame-100: #ffe2d5;
+  --color-flame-200: #fec3aa;
+  --color-flame-300: #fb9a74;
+  --color-flame-400: #f7764a;
+  --color-flame-500: #f15a2b;
+  --color-flame-600: #dc4517;
+  --color-flame-700: #b63512;
+  --color-crimson-400: #f4474d;
+  --color-crimson-500: #ed1c24;
+  --color-crimson-600: #c8141b;
+  /* Nama ringkas yang digunakan pada ikon & teks aksen */
+  --color-pink: #ed1c24;
+  --color-violet: #f15a2b;
+  --color-indigo: #282366;
 
   --radius-plate: 10px;
   --radius-ctl: 10px;
@@ -41,13 +63,13 @@
 }
 
 :root {
-  --grad-main: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #ec4899 100%);
+  --grad-main: linear-gradient(135deg, #f7764a 0%, #f15a2b 45%, #ed1c24 100%);
   --grad-warm: linear-gradient(135deg, #fbbf24 0%, #f97316 100%);
-  --grad-cool: linear-gradient(135deg, #06b6d4 0%, #6366f1 100%);
+  --grad-cool: linear-gradient(135deg, #3d3790 0%, #282366 100%);
   --grad-ok: linear-gradient(135deg, #10b981 0%, #059669 100%);
-  --grad-ink: linear-gradient(135deg, #312e81 0%, #5b21b6 55%, #9d174d 100%);
-  --shadow-soft: 0 10px 30px -12px rgba(79, 70, 229, 0.22), 0 2px 6px -2px rgba(30, 27, 75, 0.06);
-  --shadow-lift: 0 22px 45px -18px rgba(124, 58, 237, 0.45), 0 4px 10px -4px rgba(30, 27, 75, 0.1);
+  --grad-ink: linear-gradient(135deg, #16133b 0%, #282366 50%, #3d3790 100%);
+  --shadow-soft: 0 10px 30px -12px rgba(40,35,102, 0.22), 0 2px 6px -2px rgba(30, 27, 75, 0.06);
+  --shadow-lift: 0 22px 45px -18px rgba(40,35,102, 0.45), 0 4px 10px -4px rgba(30, 27, 75, 0.1);
 }
 
 @layer base {
@@ -55,9 +77,9 @@
   body {
     background-color: var(--color-paper);
     background-image:
-      radial-gradient(60rem 40rem at 105% -10%, rgba(236, 72, 153, 0.12), transparent 60%),
-      radial-gradient(50rem 35rem at -10% 10%, rgba(99, 102, 241, 0.14), transparent 60%),
-      radial-gradient(45rem 30rem at 50% 110%, rgba(6, 182, 212, 0.1), transparent 60%);
+      radial-gradient(60rem 40rem at 105% -10%, rgba(241,90,43, 0.12), transparent 60%),
+      radial-gradient(50rem 35rem at -10% 10%, rgba(40,35,102, 0.14), transparent 60%),
+      radial-gradient(45rem 30rem at 50% 110%, rgba(251,191,36, 0.1), transparent 60%);
     background-attachment: fixed;
     color: var(--color-ink);
     font-family: var(--font-sans);
@@ -67,7 +89,7 @@
   }
   h1, h2, h3 { font-family: var(--font-display); letter-spacing: 0.005em; line-height: 1.1; }
   :focus-visible { outline: 2px solid var(--color-sign); outline-offset: 2px; border-radius: 6px; }
-  ::selection { background: #f0abfc; color: var(--color-ink); }
+  ::selection { background: #fec3aa; color: var(--color-ink); }
 }
 
 @layer components {
@@ -83,12 +105,12 @@
   .btn:hover:not(:disabled) { transform: translateY(-1px); }
   .btn:active:not(:disabled) { transform: translateY(0) scale(.98); }
   .btn:disabled { opacity: .55; cursor: not-allowed; }
-  .btn-primary { background: var(--grad-main); color: #fff; box-shadow: 0 8px 20px -8px rgba(139, 92, 246, .65); }
+  .btn-primary { background: var(--grad-main); color: #fff; box-shadow: 0 8px 20px -8px rgba(241,90,43, .65); }
   .btn-primary:hover:not(:disabled) { box-shadow: var(--shadow-lift); filter: saturate(1.15) brightness(1.04); }
   .btn-tag { background: var(--grad-warm); color: #fff; box-shadow: 0 8px 20px -8px rgba(249, 115, 22, .6); }
   .btn-tag:hover:not(:disabled) { box-shadow: 0 16px 30px -12px rgba(249, 115, 22, .7); filter: brightness(1.05); }
   .btn-ghost { background: var(--color-panel); color: var(--color-ink); border-color: var(--color-line); box-shadow: 0 2px 6px -2px rgba(30, 27, 75, .08); }
-  .btn-ghost:hover:not(:disabled) { border-color: #c4b5fd; color: var(--color-sign); box-shadow: var(--shadow-soft); }
+  .btn-ghost:hover:not(:disabled) { border-color: #fbb79a; color: var(--color-sign); box-shadow: var(--shadow-soft); }
   .btn-danger { background: var(--color-panel); color: var(--color-danger); border-color: #fecdd3; }
   .btn-danger:hover:not(:disabled) { background: var(--color-danger-soft); }
   .btn-ok { background: var(--grad-ok); color: #fff; box-shadow: 0 8px 20px -8px rgba(16, 185, 129, .6); }
@@ -103,26 +125,26 @@
     transition: border-color .15s, box-shadow .15s;
   }
   textarea.input { height: auto; padding: .6rem .8rem; min-height: 5rem; }
-  .input:hover { border-color: #c4b5fd; }
-  .input:focus { outline: none; border-color: var(--color-violet); box-shadow: 0 0 0 4px rgba(139, 92, 246, .15); }
+  .input:hover { border-color: #fbb79a; }
+  .input:focus { outline: none; border-color: var(--color-violet); box-shadow: 0 0 0 4px rgba(241,90,43, .15); }
 
   /* Panel dengan sempadan gradien lembut dan bayang */
   .panel {
     position: relative;
     background:
       linear-gradient(#fff, #fff) padding-box,
-      linear-gradient(135deg, #c7d2fe, #e9d5ff 50%, #fbcfe8) border-box;
+      linear-gradient(135deg, #dedcf0, #ffe2d5 50%, #fec3aa) border-box;
     border: 1px solid transparent;
     border-radius: var(--radius-panel);
     box-shadow: var(--shadow-soft);
   }
 
   .tbl { width: 100%; border-collapse: collapse; font-size: .9rem; }
-  .tbl th { text-align: left; font-weight: 600; font-size: .8rem; color: var(--color-ink-3); padding: .75rem 1rem; border-bottom: 1px solid var(--color-line); background: linear-gradient(180deg, #faf9ff, #f3f1ff); white-space: nowrap; }
+  .tbl th { text-align: left; font-weight: 600; font-size: .8rem; color: var(--color-ink-3); padding: .75rem 1rem; border-bottom: 1px solid var(--color-line); background: linear-gradient(180deg, #fffaf6, #fdf3ec); white-space: nowrap; }
   .tbl td { padding: .75rem 1rem; border-bottom: 1px solid var(--color-line-2); vertical-align: middle; }
   .tbl tr:last-child td { border-bottom: 0; }
   .tbl tbody tr { transition: background-color .15s; }
-  .tbl tbody tr:hover td { background: #faf8ff; }
+  .tbl tbody tr:hover td { background: #fff8f3; }
 
   .link { color: var(--color-sign); font-weight: 600; }
   .link:hover { text-decoration: underline; text-underline-offset: 3px; }
@@ -140,7 +162,7 @@
     -webkit-background-clip: text; background-clip: text; color: transparent;
   }
   .text-grad-anim {
-    background: linear-gradient(90deg, #6366f1, #8b5cf6, #ec4899, #f59e0b, #6366f1);
+    background: linear-gradient(90deg, #3d3790, #f15a2b, #ed1c24, #f59e0b, #3d3790);
     background-size: 300% 100%;
     -webkit-background-clip: text; background-clip: text; color: transparent;
     animation: grad-move 8s linear infinite;
@@ -164,9 +186,9 @@
 
   .sidebar-grad {
     background:
-      radial-gradient(20rem 16rem at 0% 0%, rgba(236, 72, 153, .35), transparent 60%),
-      radial-gradient(18rem 18rem at 100% 100%, rgba(6, 182, 212, .25), transparent 60%),
-      linear-gradient(180deg, #312e81 0%, #4c1d95 55%, #701a75 100%);
+      radial-gradient(20rem 16rem at 0% 0%, rgba(241,90,43, .22), transparent 60%),
+      radial-gradient(18rem 18rem at 100% 100%, rgba(237,28,36, .18), transparent 60%),
+      linear-gradient(180deg, #282366 0%, #1f1b52 55%, #16133b 100%);
   }
 }
 
@@ -240,3 +262,6 @@
 .cartoon-spin { animation: cartoon-spin 18s linear infinite; }
 @keyframes cartoon-light { 0%,100% { fill: #fde68a; } 50% { fill: #fbbf24; } }
 .cartoon-light { animation: cartoon-light 2.4s ease-in-out infinite; }
+
+/* Dialog muncul dengan animasi */
+dialog[open] { animation: pop .4s cubic-bezier(.2,.7,.2,1) both; }

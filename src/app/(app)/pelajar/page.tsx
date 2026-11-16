@@ -55,8 +55,8 @@ export default async function StudentsPage({ searchParams }: { searchParams: Pro
 
       <section className="mb-6 grid grid-cols-2 gap-4 lg:grid-cols-4">
         {[
-          { label: "Jumlah pelajar", value: stats.total, icon: Users, grad: "from-indigo-500 to-violet-500" },
-          { label: "Daftar 24 jam", value: stats.today, icon: UserPlus, grad: "from-pink-500 to-rose-500" },
+          { label: "Jumlah pelajar", value: stats.total, icon: Users, grad: "from-navy-500 to-navy-700" },
+          { label: "Daftar 24 jam", value: stats.today, icon: UserPlus, grad: "from-flame-500 to-crimson-500" },
           { label: "Daftar 7 hari", value: stats.week, icon: CalendarDays, grad: "from-amber-400 to-orange-500" },
           { label: "Akaun aktif", value: stats.active, icon: Activity, grad: "from-emerald-500 to-teal-500" },
         ].map((s, i) => (

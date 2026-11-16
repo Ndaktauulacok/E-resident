@@ -1,0 +1,13 @@
+{
+  "name": "E-RESIDENT",
+  "dockerComposeFile": "docker-compose.yml",
+  "service": "app",
+  "workspaceFolder": "/workspaces/e-resident",
+  "forwardPorts": [3000],
+  "portsAttributes": { "3000": { "label": "E-RESIDENT", "onAutoForward": "openBrowser" } },
+  "postCreateCommand": "bash scripts/codespaces-setup.sh",
+  "postAttachCommand": "echo 'Jalankan: npm run dev  (akaun demo: admin / Demo@1234)'",
+  "customizations": {
+    "vscode": { "extensions": ["Prisma.prisma", "bradlc.vscode-tailwindcss"] }
+  }
+}

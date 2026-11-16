@@ -1,0 +1,17 @@
+services:
+  app:
+    image: mcr.microsoft.com/devcontainers/javascript-node:22
+    command: sleep infinity
+    volumes:
+      - ..:/workspaces/e-resident:cached
+    network_mode: service:db
+  db:
+    image: mysql:8.4
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpass
+      MYSQL_DATABASE: eresident
+    volumes:
+      - eresident-mysql:/var/lib/mysql
+volumes:
+  eresident-mysql:

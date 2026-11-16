@@ -1,0 +1,607 @@
+// E-RESIDENT — Electronic Residential Management System
+// Skema pangkalan data (MySQL 8 + Prisma 6)
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+// ─────────────────────────────── ENUM ───────────────────────────────
+
+enum RoleKey {
+  ADMIN
+  KETUA_WARDEN
+  WARDEN
+  KETUA_ASRAMA
+  PEN_KETUA_ASRAMA
+  KETUA_BLOK
+  PEN_KETUA_BLOK
+  KETUA_DORM
+  PEN_KETUA_DORM
+  PENGHUNI
+}
+
+enum UserStatus {
+  PENDING_ACTIVATION
+  ACTIVE
+  INACTIVE
+}
+
+enum TokenType {
+  ACTIVATION
+  PASSWORD_RESET
+}
+
+enum Gender {
+  LELAKI
+  PEREMPUAN
+}
+
+enum ResidentStatus {
+  MENUNGGU_PENDAFTARAN
+  AKTIF
+  TIDAK_AKTIF
+  DITOLAK
+}
+
+enum RegistrationStatus {
+  MENUNGGU_KETUA_BLOK
+  MENUNGGU_WARDEN
+  PERLU_PEMBETULAN
+  DILULUSKAN
+  DITOLAK
+}
+
+enum AttendanceSession {
+  PAGI
+  MALAM
+}
+
+enum AttendanceStatus {
+  DRAF
+  MENUNGGU_KETUA_BLOK
+  PERLU_PEMBETULAN
+  DILULUSKAN_KETUA_BLOK
+  MENUNGGU_WARDEN
+  SELESAI
+}
+
+enum ApprovalEntity {
+  ATTENDANCE_REPORT
+  RESIDENT_REGISTRATION
+  HYGIENE_INSPECTION
+  COMPLAINT
+  DISCIPLINE_RECORD
+}
+
+enum ApprovalAction {
+  HANTAR
+  LULUS
+  KEMBALIKAN
+  TOLAK
+  PINDA
+}
+
+enum ComplaintStatus {
+  BAHARU
+  DALAM_SEMAKAN
+  DALAM_TINDAKAN
+  SELESAI
+  DITOLAK
+}
+
+enum InspectionStatus {
+  MENUNGGU_KETUA_BLOK
+  MENUNGGU_WARDEN
+  PERLU_TINDAKAN
+  SELESAI
+}
+
+enum DisciplineStatus {
+  DILAPORKAN
+  DALAM_SIASATAN
+  TINDAKAN_DIAMBIL
+  DITUTUP
+}
+
+enum OrgHierarchy {
+  WARDEN
+  PELAJAR
+}
+
+enum AnnouncementTarget {
+  SEMUA
+  SEMUA_PENGHUNI
+  SEMUA_WARDEN
+  BLOK
+  DORM
+  ROLE
+}
+
+// ─────────────────────── PENGGUNA, ROLE, PERMISSION ───────────────────────
+
+model Role {
+  id          String           @id @default(cuid())
+  key         RoleKey          @unique
+  name        String           @db.VarChar(80)
+  rank        Int // 1 = tertinggi
+  description String?          @db.VarChar(255)
+  permissions RolePermission[]
+  users       User[]
+}
+
+model Permission {
+  id          String               @id @default(cuid())
+  key         String               @unique @db.VarChar(80)
+  module      String               @db.VarChar(60)
+  description String               @db.VarChar(255)
+  roles       RolePermission[]
+  overrides   UserPermission[]
+}
+
+model RolePermission {
+  roleId       String
+  permissionId String
+  role         Role       @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  permission   Permission @relation(fields: [permissionId], references: [id], onDelete: Cascade)
+
+  @@id([roleId, permissionId])
+}
+
+/// Kebenaran tambahan / tarikan bagi pengguna tertentu (cth. Penolong Ketua Dorm diberi kuasa menghantar laporan)
+model UserPermission {
+  userId       String
+  permissionId String
+  granted      Boolean    @default(true)
+  grantedById  String?
+  createdAt    DateTime   @default(now())
+  user         User       @relation("UserOverrides", fields: [userId], references: [id], onDelete: Cascade)
+  permission   Permission @relation(fields: [permissionId], references: [id], onDelete: Cascade)
+  grantedBy    User?      @relation("OverrideGrantor", fields: [grantedById], references: [id], onDelete: SetNull)
+
+  @@id([userId, permissionId])
+}
+
+model User {
+  id           String     @id @default(cuid())
+  username     String     @unique @db.VarChar(60)
+  email        String?    @unique @db.VarChar(160)
+  name         String     @db.VarChar(120)
+  phone        String?    @db.VarChar(20)
+  photoUrl     String?    @db.VarChar(255)
+  passwordHash String?    @db.VarChar(255)
+  status       UserStatus @default(PENDING_ACTIVATION)
+  roleId       String
+  lastLoginAt  DateTime?
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+
+  role                Role               @relation(fields: [roleId], references: [id])
+  resident            Resident?          @relation("ResidentAccount")
+  sessions            Session[]
+  tokens              AccountToken[]
+  permissionOverrides UserPermission[]   @relation("UserOverrides")
+  grantedOverrides    UserPermission[]   @relation("OverrideGrantor")
+  blocksHeaded        Block[]            @relation("BlockHead")
+  blocksAssisted      Block[]            @relation("BlockAssistant")
+  dormsHeaded         Dorm[]             @relation("DormHead")
+  dormsAssisted       Dorm[]             @relation("DormAssistant")
+  wardenBlocks        WardenAssignment[]
+  schedules           WardenSchedule[]   @relation("ScheduleWarden")
+  schedulesCreated    WardenSchedule[]   @relation("ScheduleCreator")
+  reportsSubmitted    AttendanceReport[] @relation("ReportSubmitter")
+  amendments          AttendanceAmendment[]
+  approvals           Approval[]
+  registrationsMade   ResidentRegistration[] @relation("RegSubmitter")
+  residentHistory     ResidentHistory[]
+  notifications       Notification[]
+  auditLogs           AuditLog[]
+  announcements       Announcement[]
+  complaints          Complaint[]          @relation("ComplaintReporter")
+  maintenanceAssigned MaintenanceAssignment[] @relation("MaintAssignedBy")
+  inspections         HygieneInspection[]  @relation("Inspector")
+  disciplineReported  DisciplineRecord[]   @relation("DisciplineReporter")
+  disciplineHandled   DisciplineRecord[]   @relation("DisciplineHandler")
+  orgMember           OrganizationMember?
+
+  @@index([roleId])
+  @@index([status])
+}
+
+model Session {
+  id         String    @id @default(cuid())
+  userId     String
+  tokenHash  String    @unique @db.Char(64)
+  ip         String?   @db.VarChar(64)
+  userAgent  String?   @db.VarChar(255)
+  createdAt  DateTime  @default(now())
+  lastSeenAt DateTime  @default(now())
+  expiresAt  DateTime
+  revokedAt  DateTime?
+  user       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([expiresAt])
+}
+
+/// Token pengaktifan akaun & reset kata laluan (disimpan dalam bentuk hash)
+model AccountToken {
+  id        String    @id @default(cuid())
+  userId    String
+  type      TokenType
+  tokenHash String    @unique @db.Char(64)
+  expiresAt DateTime
+  usedAt    DateTime?
+  createdAt DateTime  @default(now())
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, type])
+}
+
+/// Untuk rate limiting log masuk
+model LoginAttempt {
+  id        String   @id @default(cuid())
+  username  String   @db.VarChar(60)
+  ip        String?  @db.VarChar(64)
+  success   Boolean
+  createdAt DateTime @default(now())
+
+  @@index([username, createdAt])
+  @@index([ip, createdAt])
+}
+
+// ─────────────────────────────── BLOK & DORM ───────────────────────────────
+
+model Block {
+  id              String   @id @default(cuid())
+  code            String   @unique @db.VarChar(10)
+  name            String   @db.VarChar(80)
+  gender          Gender
+  description     String?  @db.VarChar(255)
+  headUserId      String?
+  assistantUserId String?
+  isActive        Boolean  @default(true)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  head      User?              @relation("BlockHead", fields: [headUserId], references: [id], onDelete: SetNull)
+  assistant User?              @relation("BlockAssistant", fields: [assistantUserId], references: [id], onDelete: SetNull)
+  dorms     Dorm[]
+  wardens   WardenAssignment[]
+}
+
+model Dorm {
+  id              String   @id @default(cuid())
+  blockId         String
+  code            String   @db.VarChar(10)
+  floor           Int      @default(1)
+  capacity        Int
+  headUserId      String?
+  assistantUserId String?
+  isActive        Boolean  @default(true)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  block              Block               @relation(fields: [blockId], references: [id])
+  head               User?               @relation("DormHead", fields: [headUserId], references: [id], onDelete: SetNull)
+  assistant          User?               @relation("DormAssistant", fields: [assistantUserId], references: [id], onDelete: SetNull)
+  residents          Resident[]
+  attendanceReports  AttendanceReport[]
+  hygieneInspections HygieneInspection[]
+
+  @@unique([blockId, code])
+  @@index([blockId])
+}
+
+/// Bidang kuasa Warden mengikut blok
+model WardenAssignment {
+  wardenUserId String
+  blockId      String
+  createdAt    DateTime @default(now())
+  warden       User     @relation(fields: [wardenUserId], references: [id], onDelete: Cascade)
+  block        Block    @relation(fields: [blockId], references: [id], onDelete: Cascade)
+
+  @@id([wardenUserId, blockId])
+}
+
+// ─────────────────────────────── PENGHUNI ───────────────────────────────
+
+model Resident {
+  id           String         @id @default(cuid())
+  matricNo     String         @unique @db.VarChar(30)
+  fullName     String         @db.VarChar(150)
+  gender       Gender
+  phone        String?        @db.VarChar(20)
+  photoUrl     String?        @db.VarChar(255)
+  dormId       String
+  registeredAt DateTime       @default(now())
+  status       ResidentStatus @default(MENUNGGU_PENDAFTARAN)
+  userId       String?        @unique
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+
+  dorm              Dorm                  @relation(fields: [dormId], references: [id])
+  user              User?                 @relation("ResidentAccount", fields: [userId], references: [id], onDelete: SetNull)
+  history           ResidentHistory[]
+  registrations     ResidentRegistration[]
+  attendanceRecords AttendanceRecord[]
+  disciplineRecords DisciplineRecord[]
+
+  @@index([dormId, status])
+  @@index([fullName])
+}
+
+model ResidentHistory {
+  id         String   @id @default(cuid())
+  residentId String
+  action     String   @db.VarChar(40) // DAFTAR, KEMASKINI, PINDAH_DORM, NYAHAKTIF, AKTIF
+  fromDormId String?
+  toDormId   String?
+  changes    Json?
+  note       String?  @db.VarChar(255)
+  byUserId   String?
+  createdAt  DateTime @default(now())
+  resident   Resident @relation(fields: [residentId], references: [id], onDelete: Cascade)
+  byUser     User?    @relation(fields: [byUserId], references: [id], onDelete: SetNull)
+
+  @@index([residentId, createdAt])
+}
+
+model ResidentRegistration {
+  id              String             @id @default(cuid())
+  residentId      String
+  requestAccount  Boolean            @default(true)
+  status          RegistrationStatus @default(MENUNGGU_KETUA_BLOK)
+  submittedById   String
+  submittedAt     DateTime           @default(now())
+  updatedAt       DateTime           @updatedAt
+  resident        Resident           @relation(fields: [residentId], references: [id], onDelete: Cascade)
+  submittedBy     User               @relation("RegSubmitter", fields: [submittedById], references: [id])
+
+  @@index([status])
+}
+
+// ─────────────────────────────── KEHADIRAN ───────────────────────────────
+
+model AttendanceReport {
+  id              String            @id @default(cuid())
+  dormId          String
+  date            DateTime          @db.Date
+  session         AttendanceSession
+  registeredCount Int
+  presentCount    Int
+  absentCount     Int
+  status          AttendanceStatus  @default(DRAF)
+  submittedById   String
+  submittedAt     DateTime?
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+
+  dorm        Dorm                  @relation(fields: [dormId], references: [id])
+  submittedBy User                  @relation("ReportSubmitter", fields: [submittedById], references: [id])
+  records     AttendanceRecord[]
+  amendments  AttendanceAmendment[]
+
+  /// Satu laporan rasmi bagi setiap dorm, tarikh dan sesi
+  @@unique([dormId, date, session])
+  @@index([date, session])
+  @@index([status])
+}
+
+model AttendanceRecord {
+  id         String           @id @default(cuid())
+  reportId   String
+  residentId String
+  present    Boolean
+  reason     String?          @db.VarChar(200)
+  report     AttendanceReport @relation(fields: [reportId], references: [id], onDelete: Cascade)
+  resident   Resident         @relation(fields: [residentId], references: [id])
+
+  @@unique([reportId, residentId])
+  @@index([residentId])
+}
+
+model AttendanceAmendment {
+  id        String           @id @default(cuid())
+  reportId  String
+  byUserId  String
+  reason    String           @db.VarChar(255)
+  before    Json
+  after     Json
+  createdAt DateTime         @default(now())
+  report    AttendanceReport @relation(fields: [reportId], references: [id], onDelete: Cascade)
+  byUser    User             @relation(fields: [byUserId], references: [id])
+
+  @@index([reportId])
+}
+
+/// Jejak semakan generik untuk semua aliran kelulusan
+model Approval {
+  id         String         @id @default(cuid())
+  entityType ApprovalEntity
+  entityId   String
+  stage      String         @db.VarChar(40) // DORM, KETUA_BLOK, WARDEN, ADMIN
+  action     ApprovalAction
+  actorId    String
+  note       String?        @db.VarChar(500)
+  createdAt  DateTime       @default(now())
+  actor      User           @relation(fields: [actorId], references: [id])
+
+  @@index([entityType, entityId])
+  @@index([actorId])
+}
+
+// ─────────────────────────────── WARDEN ───────────────────────────────
+
+model WardenSchedule {
+  id           String   @id @default(cuid())
+  wardenUserId String
+  date         DateTime @db.Date
+  startTime    String   @db.VarChar(5)
+  endTime      String   @db.VarChar(5)
+  location     String   @db.VarChar(120)
+  notes        String?  @db.VarChar(255)
+  createdById  String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  warden       User     @relation("ScheduleWarden", fields: [wardenUserId], references: [id])
+  createdBy    User     @relation("ScheduleCreator", fields: [createdById], references: [id])
+
+  @@index([date])
+  @@index([wardenUserId, date])
+}
+
+model OrganizationMember {
+  id        String       @id @default(cuid())
+  hierarchy OrgHierarchy
+  userId    String?      @unique
+  name      String       @db.VarChar(120)
+  position  String       @db.VarChar(120)
+  unit      String?      @db.VarChar(120)
+  phone     String?      @db.VarChar(20)
+  photoUrl  String?      @db.VarChar(255)
+  parentId  String?
+  sortOrder Int          @default(0)
+  isActive  Boolean      @default(true)
+  createdAt DateTime     @default(now())
+  updatedAt DateTime     @updatedAt
+  user      User?        @relation(fields: [userId], references: [id], onDelete: SetNull)
+  parent    OrganizationMember?  @relation("OrgTree", fields: [parentId], references: [id], onDelete: SetNull)
+  children  OrganizationMember[] @relation("OrgTree")
+
+  @@index([hierarchy, sortOrder])
+}
+
+// ─────────────────────── PENGUMUMAN & NOTIFIKASI ───────────────────────
+
+model Announcement {
+  id            String             @id @default(cuid())
+  title         String             @db.VarChar(200)
+  body          String             @db.Text
+  attachmentUrl String?            @db.VarChar(255)
+  target        AnnouncementTarget
+  targetValue   String?            @db.VarChar(80) // blockId / dormId / RoleKey
+  publishedAt   DateTime           @default(now())
+  authorId      String
+  isActive      Boolean            @default(true)
+  author        User               @relation(fields: [authorId], references: [id])
+
+  @@index([publishedAt])
+}
+
+model Notification {
+  id        String    @id @default(cuid())
+  userId    String
+  title     String    @db.VarChar(200)
+  body      String?   @db.VarChar(500)
+  link      String?   @db.VarChar(255)
+  readAt    DateTime?
+  createdAt DateTime  @default(now())
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, readAt])
+}
+
+// ─────────────────────── ADUAN, KEBERSIHAN, DISIPLIN ───────────────────────
+
+model Complaint {
+  id           String          @id @default(cuid())
+  title        String          @db.VarChar(200)
+  category     String          @db.VarChar(60)
+  location     String          @db.VarChar(120)
+  description  String          @db.Text
+  photoUrl     String?         @db.VarChar(255)
+  status       ComplaintStatus @default(BAHARU)
+  rejectReason String?         @db.VarChar(255)
+  reporterId   String
+  createdAt    DateTime        @default(now())
+  updatedAt    DateTime        @updatedAt
+  reporter     User            @relation("ComplaintReporter", fields: [reporterId], references: [id])
+  assignments  MaintenanceAssignment[]
+
+  @@index([status])
+  @@index([reporterId])
+}
+
+model MaintenanceAssignment {
+  id           String    @id @default(cuid())
+  complaintId  String
+  assignee     String    @db.VarChar(120) // pihak bertanggungjawab (unit/kontraktor)
+  notes        String?   @db.VarChar(255)
+  assignedById String
+  assignedAt   DateTime  @default(now())
+  completedAt  DateTime?
+  complaint    Complaint @relation(fields: [complaintId], references: [id], onDelete: Cascade)
+  assignedBy   User      @relation("MaintAssignedBy", fields: [assignedById], references: [id])
+}
+
+model HygieneInspection {
+  id          String           @id @default(cuid())
+  dormId      String
+  date        DateTime         @db.Date
+  kind        String           @db.VarChar(20) // KENDIRI / RASMI
+  scores      Json // { lantai, katil, tandas, susunan, tongSampah, keseluruhan }
+  totalScore  Int
+  notes       String?          @db.VarChar(500)
+  photoUrl    String?          @db.VarChar(255)
+  status      InspectionStatus @default(MENUNGGU_KETUA_BLOK)
+  correction  String?          @db.VarChar(255)
+  inspectorId String
+  createdAt   DateTime         @default(now())
+  dorm        Dorm             @relation(fields: [dormId], references: [id])
+  inspector   User             @relation("Inspector", fields: [inspectorId], references: [id])
+
+  @@index([dormId, date])
+}
+
+model DisciplineRecord {
+  id           String           @id @default(cuid())
+  residentId   String
+  incidentAt   DateTime
+  location     String           @db.VarChar(120)
+  category     String           @db.VarChar(60)
+  description  String           @db.Text
+  evidenceUrl  String?          @db.VarChar(255)
+  status       DisciplineStatus @default(DILAPORKAN)
+  actionNotes  String?          @db.Text
+  reporterId   String
+  handlerId    String?
+  createdAt    DateTime         @default(now())
+  updatedAt    DateTime         @updatedAt
+  resident     Resident         @relation(fields: [residentId], references: [id])
+  reporter     User             @relation("DisciplineReporter", fields: [reporterId], references: [id])
+  handler      User?            @relation("DisciplineHandler", fields: [handlerId], references: [id], onDelete: SetNull)
+
+  @@index([residentId])
+  @@index([status])
+}
+
+// ─────────────────────────── AUDIT & TETAPAN ───────────────────────────
+
+/// Audit log: hanya ditambah (append-only). Tiada fungsi edit/padam dalam aplikasi.
+model AuditLog {
+  id         String   @id @default(cuid())
+  userId     String?
+  action     String   @db.VarChar(60)
+  entityType String?  @db.VarChar(60)
+  entityId   String?  @db.VarChar(40)
+  summary    String   @db.VarChar(500)
+  meta       Json?
+  ip         String?  @db.VarChar(64)
+  createdAt  DateTime @default(now())
+  user       User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([createdAt])
+  @@index([userId])
+  @@index([entityType, entityId])
+}
+
+model SystemSetting {
+  key       String   @id @db.VarChar(80)
+  value     Json
+  updatedAt DateTime @updatedAt
+}

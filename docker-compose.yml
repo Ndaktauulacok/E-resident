@@ -1,0 +1,18 @@
+# MySQL untuk pembangunan tempatan: docker compose up -d
+services:
+  db:
+    image: mysql:8.4
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpass
+      MYSQL_DATABASE: eresident
+    ports:
+      - "3306:3306"
+    volumes:
+      - eresident-mysql:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-prootpass"]
+      interval: 5s
+      retries: 20
+volumes:
+  eresident-mysql:

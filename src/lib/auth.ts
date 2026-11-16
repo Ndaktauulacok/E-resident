@@ -108,7 +108,7 @@ export function isFullAccess(user: AuthUser) {
 /** Untuk halaman (server component) */
 export async function requireUser() {
   const u = await getCurrentUser();
-  if (!u) redirect("/login");
+  if (!u) redirect("/");
   return u;
 }
 export async function requirePage(perm: PermissionKey) {

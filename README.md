@@ -131,6 +131,24 @@ Kata laluan semua akaun: **`Demo@1234`**
 | `pkd.a101` | Penolong Ketua Dorm A-101 | Diberi kuasa menghantar laporan |
 | `pelajar` | Penghuni | Profil sendiri |
 
+### Portal & pendaftaran pelajar
+
+| Halaman | Untuk | Cara log masuk |
+|---|---|---|
+| `/` | Semua | Laman utama dengan butang **Get Started** dan butang **Portal Admin** yang berasingan |
+| `/login` | Pelajar & staf asrama | Pelajar: no. IC (12 digit) + 4 digit terakhir IC. Staf: nama pengguna + kata laluan |
+| `/daftar` | Pelajar baharu | Daftar dengan nama, no. IC dan telefon. Akaun aktif serta-merta |
+| `/admin-login` | Admin & Ketua Warden sahaja | Akaun akses penuh ditolak di `/login` dan mesti guna portal ini |
+| `/pelajar` | Admin | Senarai pelajar yang mendaftar sendiri: aktif/nyahaktif, reset kata laluan, padam |
+
+Cipta atau tukar kata laluan akaun admin khas:
+
+```bash
+npx tsx scripts/create-admin.ts --username adminkvsp1 --password "KataLaluanKuat123" --name "Pentadbir KVSP1"
+```
+
+> **Nota keselamatan:** kata laluan 4 digit terakhir IC mudah diteka oleh sesiapa yang tahu no. IC pelajar. Had cubaan log masuk (5 kali / 15 minit) membantu, tetapi galakkan pelajar menukar kata laluan di halaman Profil.
+
 ---
 
 ## Cuba aliran kerja penuh

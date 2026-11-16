@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { ArrowRight, BellRing, CalendarClock, UserRound } from "lucide-react";
 import { db } from "@/lib/db";
 import { can, getScope, requireUser, type AuthUser, type Scope } from "@/lib/auth";
 import { dateOnly, fmtDate, fmtDateTime, relTime, todayISO } from "@/lib/dates";
@@ -9,6 +10,7 @@ import { ATTENDANCE_STATUS, APPROVAL_ACTION, SESSION_LABEL } from "@/lib/labels"
 import { Badge, DL, EmptyState, Panel, Stat } from "@/components/ui";
 import { AttendanceRateChart } from "@/components/charts";
 import { DormBoard, cellLook } from "@/components/board";
+import { KvspLogo } from "@/components/brand";
 
 export const metadata = { title: "Dashboard" };
 
@@ -19,11 +21,20 @@ function greet() {
 
 function Hello({ user, sub }: { user: AuthUser; sub: string }) {
   return (
-    <div className="mb-8">
-      <p className="text-muted">{greet()}, {fmtDate(todayISO(), true)}</p>
-      <h1 className="font-display text-[2.4rem] font-bold leading-tight">{user.name}</h1>
-      <p className="text-muted">{sub}</p>
-    </div>
+    <section className="plate-in relative mb-8 overflow-hidden rounded-[24px] bg-ink px-6 py-7 text-white shadow-[0_25px_50px_-25px_rgba(124,58,237,.7)] sm:px-8">
+      <div aria-hidden className="blob absolute -right-10 -top-16 size-64 rounded-full bg-pink-500/40" />
+      <div aria-hidden className="blob absolute -bottom-24 left-1/3 size-64 rounded-full bg-cyan-400/30" style={{ animationDelay: "-6s" }} />
+      <div aria-hidden className="absolute -right-6 top-1/2 hidden -translate-y-1/2 opacity-90 sm:block">
+        <KvspLogo size={190} className="float" />
+      </div>
+      <div className="relative max-w-[70%]">
+        <p className="inline-flex items-center gap-2 rounded-full bg-white/15 px-3 py-1 text-sm font-medium text-white/90 ring-1 ring-white/20">
+          <span className="live-dot size-2 rounded-full bg-amber-300" aria-hidden /> {greet()}, {fmtDate(todayISO(), true)}
+        </p>
+        <h1 className="mt-3 font-display text-[2.2rem] font-bold leading-tight sm:text-[2.8rem]">{user.name}</h1>
+        <p className="mt-1 text-white/75">{sub}</p>
+      </div>
+    </section>
   );
 }
 
@@ -321,7 +332,7 @@ async function ResidentDashboard({ user }: { user: AuthUser }) {
             </div>
           </section>
         ) : (
-          <div className="panel"><EmptyState title="Akaun anda belum dipautkan kepada rekod penghuni" desc="Hubungi Warden untuk menyemak rekod anda." /></div>
+          <div className="panel"><EmptyState title="Akaun anda telah didaftarkan" desc="Warden akan menempatkan anda ke blok dan dorm. Maklumat bilik akan dipaparkan di sini selepas itu." /></div>
         )}
         <Panel title="Warden bertugas hari ini" actions={<Link className="link text-sm" href="/jadual">Jadual minggu ini</Link>} pad={false}>
           {duty.length === 0 ? <p className="px-5 py-8 text-center text-muted">Tiada jadual bertugas direkodkan untuk hari ini.</p> : (
@@ -339,6 +350,32 @@ async function ResidentDashboard({ user }: { user: AuthUser }) {
           )}
         </Panel>
       </div>
+      <QuickLinks />
     </>
+  );
+}
+
+const QUICK = [
+  { href: "/jadual", title: "Jadual Warden", desc: "Semak Warden bertugas minggu ini", icon: CalendarClock, grad: "from-indigo-500 to-violet-500" },
+  { href: "/notifikasi", title: "Notifikasi", desc: "Makluman terkini dari pihak asrama", icon: BellRing, grad: "from-pink-500 to-rose-500" },
+  { href: "/profil", title: "Profil & Keselamatan", desc: "Kemas kini maklumat dan tukar kata laluan", icon: UserRound, grad: "from-amber-400 to-orange-500" },
+];
+
+function QuickLinks() {
+  return (
+    <section className="mt-6 grid gap-4 sm:grid-cols-3">
+      {QUICK.map((q, i) => (
+        <Link key={q.href} href={q.href} className="plate-in panel lift group flex items-center gap-4 p-5" style={{ animationDelay: `${150 + i * 80}ms` }}>
+          <span className={`flex size-12 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br text-white shadow-lg transition-transform duration-300 group-hover:-rotate-6 group-hover:scale-110 ${q.grad}`}>
+            <q.icon size={22} />
+          </span>
+          <span className="min-w-0">
+            <span className="block font-display text-xl font-bold">{q.title}</span>
+            <span className="block text-sm text-muted">{q.desc}</span>
+          </span>
+          <ArrowRight size={18} className="ml-auto shrink-0 text-faint transition group-hover:translate-x-1 group-hover:text-sign" />
+        </Link>
+      ))}
+    </section>
   );
 }

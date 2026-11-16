@@ -11,7 +11,7 @@ export function PageHeader({ title, desc, actions, back }: { title: string; desc
             <span aria-hidden>‹</span> {back.label}
           </Link>
         )}
-        <h1 className="text-[2rem] font-bold text-ink sm:text-[2.25rem]">{title}</h1>
+        <h1 className="text-[2rem] font-bold text-ink sm:text-[2.5rem]"><span className="text-grad">{title}</span></h1>
         {desc && <p className="mt-1 max-w-2xl text-[0.95rem] text-muted">{desc}</p>}
       </div>
       {actions && <div className="flex flex-wrap items-center gap-2">{actions}</div>}
@@ -40,8 +40,8 @@ export function Panel({ title, actions, children, className, pad = true }: { tit
   return (
     <section className={clsx("panel", className)}>
       {(title || actions) && (
-        <header className="flex items-center justify-between gap-3 border-b border-line px-5 py-3.5">
-          <h2 className="font-display text-[1.2rem] font-semibold">{title}</h2>
+        <header className="flex items-center justify-between gap-3 rounded-t-[17px] border-b border-line bg-gradient-to-r from-indigo-50/80 via-violet-50/60 to-pink-50/80 px-5 py-3.5">
+          <h2 className="flex items-center gap-2.5 font-display text-[1.25rem] font-semibold"><span className="h-5 w-1.5 rounded-full bg-gradient-to-b from-indigo-500 to-pink-500" aria-hidden />{title}</h2>
           {actions}
         </header>
       )}
@@ -53,7 +53,7 @@ export function Panel({ title, actions, children, className, pad = true }: { tit
 export function EmptyState({ title, desc, action }: { title: string; desc?: string; action?: React.ReactNode }) {
   return (
     <div className="flex flex-col items-center px-6 py-14 text-center">
-      <svg width="56" height="56" viewBox="0 0 56 56" aria-hidden className="mb-4 text-line">
+      <svg width="64" height="64" viewBox="0 0 56 56" aria-hidden className="float mb-4 text-violet-300">
         <rect x="12" y="6" width="32" height="44" rx="3" fill="none" stroke="currentColor" strokeWidth="3" />
         <circle cx="36" cy="29" r="2.5" fill="currentColor" />
       </svg>
@@ -78,12 +78,12 @@ export function Stat({ label, value, sub, href }: { label: string; value: React.
   const body = (
     <>
       <p className="text-sm font-medium text-muted">{label}</p>
-      <p className="mt-1 font-display text-[2.4rem] font-bold leading-none">{value}</p>
+      <p className="mt-1 font-display text-[2.6rem] font-bold leading-none text-grad">{value}</p>
       {sub && <p className="mt-2 text-[0.82rem] text-muted">{sub}</p>}
     </>
   );
   return href ? (
-    <Link href={href} className="block px-5 py-4 hover:bg-[#fafbfd]">{body}</Link>
+    <Link href={href} className="block px-5 py-4 transition-colors hover:bg-violet-50/60">{body}</Link>
   ) : (
     <div className="px-5 py-4">{body}</div>
   );
@@ -113,7 +113,7 @@ export function Initials({ name, className }: { name: string; className?: string
   const parts = name.replace(/^(En\.|Pn\.|Cik|Dr\.)\s*/i, "").split(/\s+/).filter((w) => !/^(bin|binti)$/i.test(w));
   const ini = (parts[0]?.[0] ?? "?") + (parts[1]?.[0] ?? "");
   return (
-    <span className={clsx("inline-flex size-9 shrink-0 items-center justify-center rounded-full bg-ink-2 font-display text-sm font-semibold uppercase text-white", className)} aria-hidden>
+    <span className={clsx("inline-flex size-9 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-indigo-500 via-violet-500 to-pink-500 font-display text-sm font-semibold uppercase text-white shadow-sm", className)} aria-hidden>
       {ini}
     </span>
   );

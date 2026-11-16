@@ -10,7 +10,7 @@ export async function logoutAction() {
   const user = await getCurrentUser();
   if (user) await audit(user.id, "LOGOUT", `${user.name} log keluar`);
   await destroySession();
-  redirect("/login");
+  redirect("/");
 }
 
 export async function markAllReadAction() {

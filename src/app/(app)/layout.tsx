@@ -28,6 +28,7 @@ export default async function AppLayout({ children }: { children: React.ReactNod
     ...(can(user, "residents.view") ? [{ href: "/penghuni", label: "Penghuni", icon: "Users", group: "Asrama" } as NavItem] : []),
     ...(can(user, "blocks.view") ? [{ href: "/blok", label: "Blok & Dorm", icon: "Building2", group: "Asrama" } as NavItem] : []),
     ...(can(user, "schedule.view") ? [{ href: "/jadual", label: "Jadual Bertugas Warden", icon: "CalendarClock", group: "Asrama" } as NavItem] : []),
+    ...(can(user, "users.manage") ? [{ href: "/pelajar", label: "Pelajar Berdaftar", icon: "GraduationCap", group: "Pentadbiran" } as NavItem] : []),
     ...(can(user, "users.manage") ? [{ href: "/akaun", label: "Akaun & Role", icon: "UserCog", group: "Pentadbiran" } as NavItem] : []),
     ...(can(user, "audit.view") ? [{ href: "/audit", label: "Audit Log", icon: "ScrollText", group: "Pentadbiran" } as NavItem] : []),
   ];
@@ -36,7 +37,7 @@ export default async function AppLayout({ children }: { children: React.ReactNod
     <div className="min-h-dvh">
       <Sidebar items={nav} institution={institution} />
       <div className="lg:pl-64">
-        <header className="sticky top-0 z-20 flex h-16 items-center gap-3 border-b border-line bg-paper/90 px-4 backdrop-blur sm:px-6 lg:px-10">
+        <header className="sticky top-0 z-20 flex h-16 items-center gap-3 border-b border-white/60 bg-white/60 px-4 shadow-[0_6px_20px_-14px_rgba(79,70,229,.35)] backdrop-blur-xl sm:px-6 lg:px-10">
           <MobileNav items={nav} institution={institution} />
           {can(user, "residents.view") ? <SearchBox action="/penghuni" placeholder="Cari penghuni (nama atau no. matrik)" /> : <div />}
           <div className="ml-auto flex items-center gap-1.5">
@@ -48,7 +49,7 @@ export default async function AppLayout({ children }: { children: React.ReactNod
             <ProfileMenu name={user.name} role={user.roleName} logout={logoutAction} />
           </div>
         </header>
-        <main className="mx-auto max-w-[1280px] px-4 py-8 sm:px-6 lg:px-10">{children}</main>
+        <main className="page-in mx-auto max-w-[1280px] px-4 py-8 sm:px-6 lg:px-10">{children}</main>
       </div>
       <Suspense>
         <Toaster />

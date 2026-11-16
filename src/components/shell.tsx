@@ -5,10 +5,11 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState, useTransition } from "react";
 import clsx from "clsx";
 import {
-  Bell, LayoutDashboard, ClipboardCheck, RadioTower, Inbox, Users, Building2, CalendarClock, UserCog, ScrollText, Menu, X, LogOut, UserRound,
+  Bell, LayoutDashboard, ClipboardCheck, RadioTower, Inbox, Users, Building2, CalendarClock, UserCog, ScrollText, Menu, X, LogOut, UserRound, GraduationCap,
 } from "lucide-react";
+import { KvspMark } from "./brand";
 
-const ICONS = { LayoutDashboard, ClipboardCheck, RadioTower, Inbox, Users, Building2, CalendarClock, UserCog, ScrollText };
+const ICONS = { LayoutDashboard, ClipboardCheck, RadioTower, Inbox, Users, Building2, CalendarClock, UserCog, ScrollText, GraduationCap };
 export type NavItem = { href: string; label: string; icon: keyof typeof ICONS; badge?: number; group: string };
 
 function NavList({ items, onNavigate }: { items: NavItem[]; onNavigate?: () => void }) {
@@ -18,7 +19,7 @@ function NavList({ items, onNavigate }: { items: NavItem[]; onNavigate?: () => v
     <nav className="flex flex-col gap-6" aria-label="Menu utama">
       {groups.map((g) => (
         <div key={g}>
-          <p className="mb-1.5 px-3 text-[0.78rem] font-medium text-white/45">{g}</p>
+          <p className="mb-1.5 px-3 text-[0.72rem] font-bold uppercase tracking-[.14em] text-white/45">{g}</p>
           <ul className="flex flex-col gap-0.5">
             {items.filter((i) => i.group === g).map((i) => {
               const Icon = ICONS[i.icon];
@@ -30,14 +31,14 @@ function NavList({ items, onNavigate }: { items: NavItem[]; onNavigate?: () => v
                     onClick={onNavigate}
                     aria-current={active ? "page" : undefined}
                     className={clsx(
-                      "relative flex items-center gap-3 rounded-[6px] px-3 py-2 text-[0.93rem] font-medium transition-colors",
-                      active ? "bg-white/10 text-white" : "text-white/70 hover:bg-white/5 hover:text-white",
+                      "relative flex items-center gap-3 rounded-xl px-3 py-2.5 text-[0.93rem] font-medium transition-all duration-200",
+                      active ? "bg-white/15 text-white shadow-[0_8px_20px_-10px_rgba(0,0,0,.5)] ring-1 ring-white/20" : "text-white/70 hover:translate-x-1 hover:bg-white/10 hover:text-white",
                     )}
                   >
-                    {active && <span className="absolute -left-4 top-1.5 bottom-1.5 w-1 rounded-r bg-tag" aria-hidden />}
+                    {active && <span className="absolute -left-4 top-2 bottom-2 w-1.5 rounded-r bg-gradient-to-b from-amber-300 to-pink-400" aria-hidden />}
                     <Icon size={18} strokeWidth={1.8} aria-hidden />
                     <span className="flex-1">{i.label}</span>
-                    {!!i.badge && <span className="rounded-full bg-tag px-1.5 text-[0.72rem] font-bold text-ink">{i.badge}</span>}
+                    {!!i.badge && <span className="rounded-full bg-gradient-to-r from-amber-300 to-orange-400 px-1.5 text-[0.72rem] font-bold text-ink shadow">{i.badge}</span>}
                   </Link>
                 </li>
               );
@@ -52,11 +53,7 @@ function NavList({ items, onNavigate }: { items: NavItem[]; onNavigate?: () => v
 function Brand({ institution }: { institution: string }) {
   return (
     <Link href="/dashboard" className="flex items-center gap-3 px-3">
-      <svg width="34" height="34" viewBox="0 0 32 32" aria-hidden>
-        <rect width="32" height="32" rx="6" fill="#263150" />
-        <rect x="8" y="6" width="16" height="20" rx="2" fill="none" stroke="#F5C542" strokeWidth="2.4" />
-        <circle cx="19.5" cy="17" r="1.7" fill="#F5C542" />
-      </svg>
+      <KvspMark size={42} />
       <span className="leading-tight">
         <span className="block font-display text-[1.3rem] font-bold tracking-wide text-white">E-RESIDENT</span>
         <span className="block max-w-[11rem] truncate text-[0.74rem] text-white/50">{institution}</span>
@@ -67,7 +64,7 @@ function Brand({ institution }: { institution: string }) {
 
 export function Sidebar({ items, institution }: { items: NavItem[]; institution: string }) {
   return (
-    <aside className="fixed inset-y-0 left-0 z-30 hidden w-64 flex-col gap-8 overflow-y-auto bg-ink px-4 py-6 lg:flex">
+    <aside className="fixed inset-y-0 left-0 z-30 hidden w-64 flex-col gap-8 overflow-y-auto sidebar-grad px-4 py-6 shadow-[8px_0_30px_-12px_rgba(76,29,149,.5)] lg:flex">
       <Brand institution={institution} />
       <NavList items={items} />
     </aside>
@@ -81,8 +78,8 @@ export function MobileNav({ items, institution }: { items: NavItem[]; institutio
       <button className="btn btn-ghost btn-sm lg:hidden" onClick={() => setOpen(true)} aria-label="Buka menu"><Menu size={18} /></button>
       {open && (
         <div className="fixed inset-0 z-50 lg:hidden" role="dialog" aria-modal="true">
-          <div className="absolute inset-0 bg-ink/50" onClick={() => setOpen(false)} />
-          <div className="absolute inset-y-0 left-0 flex w-72 flex-col gap-8 overflow-y-auto bg-ink px-4 py-6">
+          <div className="absolute inset-0 bg-[#1e1b4b]/50 backdrop-blur-sm" onClick={() => setOpen(false)} />
+          <div className="plate-in absolute inset-y-0 left-0 flex w-72 flex-col gap-8 overflow-y-auto sidebar-grad px-4 py-6">
             <div className="flex items-center justify-between">
               <Brand institution={institution} />
               <button className="text-white/70" onClick={() => setOpen(false)} aria-label="Tutup menu"><X /></button>
@@ -159,7 +156,7 @@ export function ProfileMenu({ name, role, logout }: { name: string; role: string
   return (
     <div className="relative" ref={ref}>
       <button className="flex items-center gap-2.5 rounded-full py-1 pl-1 pr-3 hover:bg-line-2" onClick={() => setOpen((o) => !o)} aria-expanded={open} aria-label="Menu profil">
-        <span className="flex size-8 items-center justify-center rounded-full bg-ink font-display text-sm font-semibold uppercase text-tag">{ini}</span>
+        <span className="flex size-9 items-center justify-center rounded-full bg-gradient-to-br from-indigo-500 via-violet-500 to-pink-500 font-display text-sm font-semibold uppercase text-white shadow-md ring-2 ring-white">{ini}</span>
         <span className="hidden text-left leading-tight sm:block">
           <span className="block max-w-[10rem] truncate text-sm font-semibold">{name}</span>
           <span className="block text-[0.75rem] text-muted">{role}</span>
@@ -195,8 +192,8 @@ export function Toaster() {
   }, [msg, sp, path, router]);
   if (!shown) return null;
   return (
-    <div role="status" className="fixed bottom-5 left-1/2 z-[60] flex -translate-x-1/2 items-center gap-3 rounded-[8px] bg-ink px-4 py-3 text-sm font-medium text-white shadow-lg">
-      <span className="size-2 rounded-full bg-tag" aria-hidden />
+    <div role="status" className="pop fixed bottom-5 left-1/2 z-[60] flex -translate-x-1/2 items-center gap-3 rounded-2xl bg-ink px-5 py-3.5 text-sm font-medium text-white shadow-[0_20px_40px_-15px_rgba(124,58,237,.7)]">
+      <span className="live-dot size-2.5 rounded-full bg-amber-300" aria-hidden />
       {shown}
     </div>
   );
